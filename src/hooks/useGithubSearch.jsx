@@ -36,7 +36,6 @@ export function useGithubSearch() {
     console.log("Recent searches updated:", updated);
   }
 
-  // ADDED: useCallback — stable reference taaki debounce timer reset na ho har render pe
   const searchUser = useCallback(async (username) => {
     if (!username.trim()) return;
 
@@ -69,9 +68,8 @@ export function useGithubSearch() {
     } finally {
       setLoading(false);
     }
-  }, []); // ADDED: empty array — function reference kabhi nahi badlega
+  }, []); 
 
-  // ADDED: useCallback — loadMore bhi stable rakhna zaroori hai
   const loadMore = useCallback(async (username) => {
     const nextPage = page + 1;
 
