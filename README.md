@@ -8,7 +8,7 @@ This is a full-stack web application built with Next.js where you can search any
 
 ## Live Demo
 
-[https://github-explorer-your-url.vercel.app](https://github-explorer-your-url.vercel.app)
+[https://github-explorer-your-url.vercel.app](https://git-hub-repo-explorer-henna.vercel.app/)
 
 ---
 
