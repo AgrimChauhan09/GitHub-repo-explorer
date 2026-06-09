@@ -139,6 +139,8 @@ github-explorer/
 
 I used Cursor AI mainly to help with a few Tailwind CSS issues, especially while implementing the skeleton loader for the repository cards. I also used it  for small syntax references when I couldn't remember the exact implementation.
 Other than that, I built the project myself while learning Next.js. I was already comfortable with the core concepts, so I didn't face many difficulties. I chose Next.js because I wanted to gain more hands-on experience with it while building a real project.
+
+
 ---
 
 ## Author
