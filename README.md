@@ -128,10 +128,6 @@ github-explorer/
 
 ---
 
-## What I Would Improve With More Time
-
-- Language breakdown chart across all repos using Recharts
-- Debounced search-as-you-type
 
 ---
 
