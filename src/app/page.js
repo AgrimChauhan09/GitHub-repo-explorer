@@ -13,7 +13,6 @@ export default function Home() {
   const { user, repos, loading, error, hasMore, sortBy, setSortBy, searchUser, loadMore, recentSearches } =
     useGithubSearch();
 
-  // useCallback — searchUser stable reference rakhta hai taaki debounce timer reset na ho
   const handleSearch = useCallback(
     (value) => {
       setUsername(value);
