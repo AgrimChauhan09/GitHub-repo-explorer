@@ -1,36 +1,147 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# GitHub Explorer
 
-## Getting Started
+I chose Exercise 3: GitHub Repo Explorer from the assessment.
 
-First, run the development server:
+This is a full-stack web application built with Next.js where you can search any GitHub username and view their public profile along with all their repositories. The frontend never calls GitHub directly — all requests go through Next.js API routes that act as a proxy, handling caching, rate limiting, and error states cleanly.
+
+---
+
+## Live Demo
+
+[https://github-explorer-your-url.vercel.app](https://github-explorer-your-url.vercel.app)
+
+---
+
+## Tech Stack
+
+**Frontend**
+- Next.js 15 (App Router)
+- React (functional components + hooks)
+- Tailwind CSS
+
+**Backend**
+- Next.js API Routes (acts as Node.js proxy)
+
+**Caching**
+- In-memory Map with 60 second TTL
+
+I used Next.js because it lets you handle both frontend and backend in a single project. The API routes proxy all GitHub calls server-side so the token never gets exposed in the browser. Tailwind kept the styling fast and consistent without needing a separate CSS file.
+
+---
+
+## Features
+
+- Search any GitHub username
+- View avatar, bio, follower count, following count and public repo count
+- Browse all public repositories with name, description, language, stars and last updated date
+- Sort repos by stars, name or last updated
+- Click any repo card to expand and see open issues, default branch and fork count
+- Load more repos with pagination
+- Server-side caching — same username within 60 seconds skips the GitHub API call entirely
+- Graceful error handling for invalid usernames, rate limits and network failures
+- Loading skeleton while data is being fetched
+
+---
+
+## How to Run Locally
 
 ```bash
+# 1. Clone the repo
+git clone https://github.com/your-username/github-explorer.git
+cd github-explorer
+
+# 2. Install dependencies
+npm install
+
+# 3. Add your GitHub token
+cp .env.example .env.local
+# Open .env.local and add:
+# GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxx
+
+# 4. Start the dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+App runs on http://localhost:3000
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## API Endpoints
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Get GitHub User**
+```
+GET /api/github/user/:username
+```
 
-## Learn More
+Response includes login, name, avatar_url, bio, followers, following, public_repos and a fromCache flag.
 
-To learn more about Next.js, take a look at the following resources:
+Error responses — 404 if user not found, 429 if rate limit is hit with a resetsAt time, 400 if username is empty.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Get User Repositories**
+```
+GET /api/github/repos/:username?page=1
+```
 
-## Deploy on Vercel
+Returns 30 repos per page. Each repo includes name, description, language, stargazers_count, updated_at, default_branch, open_issues_count, forks_count and html_url.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+```
+github-explorer/
+├── src/
+│   ├── app/
+│   │   ├── page.js                             # Home page — search bar and results
+│   │   ├── layout.js                           # Root layout
+│   │   └── api/
+│   │       └── github/
+│   │           ├── user/[username]/route.js    # Proxy route for GitHub user
+│   │           └── repos/[username]/route.js   # Proxy route for repositories
+│   ├── components/
+│   │   ├── SearchBar.jsx                       # Input with Enter key support
+│   │   ├── UserProfile.jsx                     # Avatar, bio and follower stats
+│   │   ├── RepoList.jsx                        # Sort controls and repo cards
+│   │   ├── RepoCard.jsx                        # Single repo, expandable on click
+│   │   ├── SkeletonLoader.jsx                  # Animated loading placeholder
+│   │   └── ErrorMessage.jsx                    # Error display component
+│   ├── hooks/
+│   │   └── useGithubSearch.js                  # All fetch logic, state, pagination and sorting
+│   └── lib/
+│       ├── cache.js                            # In-memory Map with TTL
+│       └── githubApi.js                        # GitHub API calls with error handling
+├── .env.example
+├── .env.local                                  # Not committed — add your token here
+└── README.md
+```
+
+---
+
+## What Works
+
+- Full GitHub user profile display
+- Repository list with sorting and pagination
+- Expandable repo cards with extra details
+- Server-side caching with 60 second TTL
+- Rate limit and 404 error handling
+- Loading skeletons while fetching
+
+---
+
+## What I Would Improve With More Time
+
+- Language breakdown chart across all repos using Recharts
+- Debounced search-as-you-type
+
+---
+
+## Note
+
+I used Cursor AI mainly to help with a few Tailwind CSS issues, especially while implementing the skeleton loader for the repository cards. I also used it  for small syntax references when I couldn't remember the exact implementation.
+
+Other than that, I built the project myself while learning Next.js. I was already comfortable with the core concepts, so I didn't face many difficulties. I chose Next.js because I wanted to gain more hands-on experience with it while building a real project.
+---
+
+## Author
+
+Agrim Chauhan
